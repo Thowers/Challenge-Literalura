@@ -10,15 +10,10 @@ import java.util.List;
 
 public interface RepositorioLibro extends JpaRepository<Libro, Long> {
 
-    List<Libro> findAll();
-
-    List<Libro> findTop10ByOrderByNumeroDeDescargaDesc();
+    @Query("SELECT l FROM Libro l JOIN FETCH l.autor")
+    List<Libro> findAllWithAutor();
 
     List<Libro> findByLenguaje(Lenguaje lenguaje);
-
     @Query("SELECT COUNT(l) FROM Libro l WHERE l.lenguaje = :lenguaje")
     Long contarLibrosPorLenguaje(@Param("lenguaje") Lenguaje lenguaje);
-
-    @Query("SELECT l FROM Libro l WHERE l.autor.Id = :idAutor")
-    List<Libro> findLibrosByAutorId(@Param("idAutor") Long idAutor);
 }
